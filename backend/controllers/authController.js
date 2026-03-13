@@ -6,11 +6,13 @@ const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '30d' });
 };
 
+const isProd = process.env.NODE_ENV === 'production';
+
 const setCookie = (res, token) => {
   res.cookie('token', token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
+    secure: isProd, // false on local, true on Vercel
+    sameSite: isProd ? 'none' : 'lax', // 'lax' works for localhost
     maxAge: 30 * 24 * 60 * 60 * 1000,
   });
 };
