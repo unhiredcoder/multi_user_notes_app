@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 
-export function middleware(request) {
-  // Read the HTTP-only cookie securely
+export function proxy(request) {
   const token = request.cookies.get('token')?.value;
   const { pathname } = request.nextUrl;
 
@@ -21,12 +20,11 @@ export function middleware(request) {
   return NextResponse.next();
 }
 
-// specify which routes this middleware should run on
 export const config = {
   matcher: [
-    '/',               
-    '/dashboard/:path*', 
-    '/login', 
+    '/',
+    '/dashboard/:path*',
+    '/login',
     '/register'
   ],
 };
