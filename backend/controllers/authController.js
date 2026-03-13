@@ -11,10 +11,14 @@ const isProd = process.env.NODE_ENV === 'production';
 const setCookie = (res, token) => {
   res.cookie('token', token, {
     httpOnly: true,
-    secure: isProd, 
-    maxAge: 30 * 24 * 60 * 60 * 1000,
+    secure: isProd,
+    sameSite: isProd ? 'none' : 'lax', // CRITICAL: 'none' allows cross-site requests
+    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+    domain: isProd ? process.env.COOKIE_DOMAIN : undefined, // Optional: set domain in production
+    path: '/', // Make cookie available across the entire site
   });
 };
+
 
 exports.register = async (req, res) => {
   try {

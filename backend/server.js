@@ -11,10 +11,13 @@ const app = express();
 
 connectDB();
 
+// Update CORS configuration
 app.use(cors({
   origin: process.env.FRONTEND_URL || 'http://localhost:3000',
   credentials: true, // required for cookies
+  optionsSuccessStatus: 200 // some legacy browsers choke on 204
 }));
+
 app.use(express.json());
 app.use(cookieParser());
 
